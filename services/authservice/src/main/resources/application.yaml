@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: authservice
+
+server:
+  port: 8081
+
+kakao:
+  client-id: YOUR_KAKAO_REST_API_KEY
+  redirect-uri: http://localhost:3000/auth/kakao/callback
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true

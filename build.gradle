@@ -1,0 +1,2 @@
+// Root project - no build configuration needed
+// Each service (gateway, authservice, userservice) has its own build.gradle
