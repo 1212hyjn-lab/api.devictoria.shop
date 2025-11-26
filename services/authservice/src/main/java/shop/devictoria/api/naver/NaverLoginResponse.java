@@ -1,6 +1,6 @@
-package shop.devictoria.api.dto;
+package shop.devictoria.api.naver;
 
-public record KakaoLoginResponse(
+public record NaverLoginResponse(
     boolean success,
     String message,
     String accessToken,

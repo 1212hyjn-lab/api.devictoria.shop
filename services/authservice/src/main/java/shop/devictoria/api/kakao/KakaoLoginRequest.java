@@ -1,4 +1,4 @@
-package shop.devictoria.api.dto;
+package shop.devictoria.api.kakao;
 
 public record KakaoLoginRequest(
     String code,

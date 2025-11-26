@@ -1,1 +1,11 @@
 rootProject.name = 'api'
+
+// 마이크로서비스 모듈 등록
+include 'gateway'
+project(':gateway').projectDir = file('gateway')
+
+include 'authservice'
+project(':authservice').projectDir = file('services/authservice')
+
+include 'userservice'
+project(':userservice').projectDir = file('services/userservice')

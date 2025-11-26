@@ -1,53 +1,55 @@
 spring:
   application:
     name: gateway
+  config:
+    import: "optional:configserver:"
   cloud:
     config:
       enabled: false
+    import-check:
+      enabled: false
     gateway:
       routes:
-        - id: health
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/health
-        - id: authservice
-          uri: http://localhost:8081
+        - id: auth-service-route
+          uri: http://authservice:8081
           predicates:
             - Path=/api/auth/**
-          filters:
-            - StripPrefix=0
-        - id: authservice-swagger
-          uri: http://localhost:8081
+        - id: user-service-route
+          uri: http://userservice:8082
           predicates:
-            - Path=/authservice/v3/api-docs
+            - Path=/api/users/**
           filters:
-            - RewritePath=/authservice/v3/api-docs, /v3/api-docs
+            - RewritePath=/api/users/(?<segment>.*), /${segment}
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "*"
-            allowedMethods: "*"
-            allowedHeaders: "*"
-      # Swagger 경로는 Gateway 라우팅에서 제외
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-
-server:
-  port: 8080
+            allowed-origins:
+              - "http://localhost:3000"
+              - "http://127.0.0.1:3000"
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowed-headers: "*"
+            allow-credentials: true
+            max-age: 3600
 
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
+    path: /docs
     enabled: true
-    path: /swagger-ui.html
-    disable-swagger-default-url: true
-    urls:
-      - url: /v3/api-docs
-        name: API Gateway
-      - url: /authservice/v3/api-docs
-        name: Auth Service
-    urls-primary-name: API Gateway
-    try-it-out-enabled: true
     operations-sorter: method
     tags-sorter: alpha
+    use-root-path: false
+    persist-authorization: true
+    show-actuator: false
+    default-flat-param-object: true
+    writer-with-order-by-keys: true
+
+server:
+  port: 8080
